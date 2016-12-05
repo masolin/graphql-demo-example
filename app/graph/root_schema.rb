@@ -30,6 +30,13 @@ QueryType = GraphQL::ObjectType.define do
       FindLoader.for(Appointment).load(args[:id])
     end
   end
+
+  field :appointment_without_loader, AppointmentType do
+    argument :id, types.Int
+    resolve -> (obj, args, ctx) do
+      Appointment.find(args[:id])
+    end
+  end
 end
 
 RootSchema = GraphQL::Schema.define do
