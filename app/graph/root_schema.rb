@@ -20,6 +20,9 @@ AppointmentType = GraphQL::ObjectType.define do
   field :patient, PatientType do
     resolve -> (obj, _, _) { FindLoader.for(Patient).load(obj.patient_id) }
   end
+  field :type, types.String do
+    resolve -> (_, _, _) { 'test' }
+  end
 end
 
 QueryType = GraphQL::ObjectType.define do
