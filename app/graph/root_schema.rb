@@ -2,6 +2,7 @@ PhysicianType = GraphQL::ObjectType.define do
   name 'Physician'
 
   field :name, types.String
+  connection :appointments, AppointmentType.connection_type
 end
 
 PatientType = GraphQL::ObjectType.define do
@@ -38,6 +39,13 @@ QueryType = GraphQL::ObjectType.define do
     argument :id, types.Int
     resolve -> (obj, args, ctx) do
       Appointment.find(args[:id])
+    end
+  end
+
+  field :physician, PhysicianType do
+    argument :id, types.Int
+    resolve -> (_, args, _) do
+      Physician.find(args[:id])
     end
   end
 end
