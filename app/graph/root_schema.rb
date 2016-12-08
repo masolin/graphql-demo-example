@@ -1,5 +1,6 @@
 PhysicianType = GraphQL::ObjectType.define do
   name 'Physician'
+  description 'This is a physician'
 
   field :name, types.String
   connection :appointments, AppointmentType.connection_type
