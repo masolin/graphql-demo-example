@@ -50,7 +50,30 @@ QueryType = GraphQL::ObjectType.define do
   end
 end
 
+MutationType = GraphQL::ObjectType.define do
+  name 'Mutation'
+  field :createPatient, field: CreatePatientMutation.field
+end
+
+
+CreatePatientMutation = GraphQL::Relay::Mutation.define do
+  name 'CreatePatient'
+
+  input_field :name, !types.String
+
+  return_field :patient, PatientType
+
+  resolve -> (_, args, _) do
+    patient = Patient.create(name: args[:name])
+
+    {
+      patient: patient
+    }
+  end
+end
+
 RootSchema = GraphQL::Schema.define do
   query QueryType
+  mutation MutationType
 end
 RootSchema.query_execution_strategy = GraphQL::Batch::ExecutionStrategy
